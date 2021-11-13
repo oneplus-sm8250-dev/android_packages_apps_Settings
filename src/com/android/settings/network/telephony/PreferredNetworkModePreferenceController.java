@@ -16,28 +16,49 @@
 
 package com.android.settings.network.telephony;
 
+import static androidx.lifecycle.Lifecycle.Event.ON_START;
+import static androidx.lifecycle.Lifecycle.Event.ON_STOP;
+
 import android.content.Context;
+import android.database.ContentObserver;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PersistableBundle;
+import android.provider.Settings;
 import android.telephony.CarrierConfigManager;
+import android.telephony.PhoneStateListener;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
+import androidx.annotation.VisibleForTesting;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
+import com.android.settings.network.AllowedNetworkTypesListener;
 import com.android.settings.network.telephony.TelephonyConstants.TelephonyManagerConstants;
 
 /**
  * Preference controller for "Preferred network mode"
  */
 public class PreferredNetworkModePreferenceController extends TelephonyBasePreferenceController
-        implements ListPreference.OnPreferenceChangeListener {
+        implements ListPreference.OnPreferenceChangeListener, LifecycleObserver {
 
+    private static final String LOG_TAG = "PreferredNetworkMode";
     private CarrierConfigManager mCarrierConfigManager;
     private TelephonyManager mTelephonyManager;
     private PersistableBundle mPersistableBundle;
     private boolean mIsGlobalCdma;
+    private Preference mPreference;
+    private PhoneCallStateListener mPhoneStateListener;
+    private AllowedNetworkTypesListener mAllowedNetworkTypesListener;
+    @VisibleForTesting
+    Integer mCallState;
 
     public PreferredNetworkModePreferenceController(Context context, String key) {
         super(context, key);
@@ -66,6 +87,33 @@ public class PreferredNetworkModePreferenceController extends TelephonyBasePrefe
         return visible ? AVAILABLE : CONDITIONALLY_UNAVAILABLE;
     }
 
+    @OnLifecycleEvent(ON_START)
+    public void onStart() {
+        if (mPhoneStateListener != null) {
+            mPhoneStateListener.register(mContext, mSubId);
+        }
+        if (mAllowedNetworkTypesListener != null) {
+            mAllowedNetworkTypesListener.register(mContext, mSubId);
+        }
+
+    }
+
+    @OnLifecycleEvent(ON_STOP)
+    public void onStop() {
+        if (mPhoneStateListener != null) {
+            mPhoneStateListener.unregister();
+        }
+        if (mAllowedNetworkTypesListener != null) {
+            mAllowedNetworkTypesListener.unregister(mContext, mSubId);
+        }
+    }
+
+    @Override
+    public void displayPreference(PreferenceScreen screen) {
+        super.displayPreference(screen);
+        mPreference = screen.findPreference(getPreferenceKey());
+    }
+
     @Override
     public void updateState(Preference preference) {
         super.updateState(preference);
@@ -73,6 +121,7 @@ public class PreferredNetworkModePreferenceController extends TelephonyBasePrefe
         final int networkMode = getPreferredNetworkMode();
         listPreference.setValue(Integer.toString(networkMode));
         listPreference.setSummary(getPreferredNetworkModeSummaryResId(networkMode));
+        listPreference.setEnabled(isCallStateIdle());
     }
 
     @Override
@@ -83,19 +132,37 @@ public class PreferredNetworkModePreferenceController extends TelephonyBasePrefe
                 TelephonyManager.ALLOWED_NETWORK_TYPES_REASON_USER,
                 MobileNetworkUtils.getRafFromNetworkType(newPreferredNetworkMode));
 
-            final ListPreference listPreference = (ListPreference) preference;
-            listPreference.setSummary(getPreferredNetworkModeSummaryResId(newPreferredNetworkMode));
-            return true;
+        final ListPreference listPreference = (ListPreference) preference;
+        listPreference.setSummary(getPreferredNetworkModeSummaryResId(newPreferredNetworkMode));
+        return true;
     }
 
-    public void init(int subId) {
+    public void init(Lifecycle lifecycle, int subId) {
         mSubId = subId;
+        if (mPhoneStateListener == null) {
+            mPhoneStateListener = new PhoneCallStateListener();
+        }
         final PersistableBundle carrierConfig = mCarrierConfigManager.getConfigForSubId(mSubId);
         mTelephonyManager = mContext.getSystemService(TelephonyManager.class)
                 .createForSubscriptionId(mSubId);
 
         mIsGlobalCdma = mTelephonyManager.isLteCdmaEvdoGsmWcdmaEnabled()
                 && carrierConfig.getBoolean(CarrierConfigManager.KEY_SHOW_CDMA_CHOICES_BOOL);
+
+        if (mAllowedNetworkTypesListener == null) {
+            mAllowedNetworkTypesListener = new AllowedNetworkTypesListener(
+                    mContext.getMainExecutor());
+            mAllowedNetworkTypesListener.setAllowedNetworkTypesListener(
+                    () -> updatePreference());
+        }
+
+        lifecycle.addObserver(this);
+    }
+
+    private void updatePreference() {
+        if (mPreference != null) {
+            updateState(mPreference);
+        }
     }
 
     private int getPreferredNetworkMode() {
@@ -184,6 +251,44 @@ public class PreferredNetworkModePreferenceController extends TelephonyBasePrefe
                 return R.string.preferred_network_mode_nr_lte_tdscdma_cdma_evdo_gsm_wcdma_summary;
             default:
                 return R.string.preferred_network_mode_global_summary;
+        }
+    }
+
+    private boolean isCallStateIdle() {
+        boolean callStateIdle = true;
+        if (mCallState != null && mCallState != TelephonyManager.CALL_STATE_IDLE) {
+            callStateIdle = false;
+        }
+        Log.d(LOG_TAG, "isCallStateIdle:" + callStateIdle);
+        return callStateIdle;
+    }
+
+    private class PhoneCallStateListener extends PhoneStateListener {
+
+        PhoneCallStateListener() {
+            super(Looper.getMainLooper());
+        }
+
+        private TelephonyManager mTelephonyManager;
+
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+            mCallState = state;
+            updateState(mPreference);
+        }
+
+        public void register(Context context, int subId) {
+            mTelephonyManager = context.getSystemService(TelephonyManager.class);
+            if (SubscriptionManager.isValidSubscriptionId(subId)) {
+                mTelephonyManager = mTelephonyManager.createForSubscriptionId(subId);
+            }
+            mTelephonyManager.listen(this, PhoneStateListener.LISTEN_CALL_STATE);
+
+        }
+
+        public void unregister() {
+            mCallState = null;
+            mTelephonyManager.listen(this, PhoneStateListener.LISTEN_NONE);
         }
     }
 }

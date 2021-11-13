@@ -65,7 +65,6 @@ public class CellDataPreference extends CustomDialogPreferenceCompat
         final CellDataState state = (CellDataState) s;
         super.onRestoreInstanceState(state.getSuperState());
         mChecked = state.mChecked;
-        mMultiSimDialog = state.mMultiSimDialog;
         if (mSubId == SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
             mSubId = state.mSubId;
             setKey(getKey() + mSubId);
@@ -77,7 +76,6 @@ public class CellDataPreference extends CustomDialogPreferenceCompat
     protected Parcelable onSaveInstanceState() {
         final CellDataState state = new CellDataState(super.onSaveInstanceState());
         state.mChecked = mChecked;
-        state.mMultiSimDialog = mMultiSimDialog;
         state.mSubId = mSubId;
         return state;
     }
@@ -138,6 +136,7 @@ public class CellDataPreference extends CustomDialogPreferenceCompat
     @Override
     protected void performClick(View view) {
         final Context context = getContext();
+        // TODO (b/123905421): Clean up dead code path
         FeatureFactory.getFactory(context).getMetricsFeatureProvider()
                 .action(context, SettingsEnums.ACTION_CELL_DATA_TOGGLE, !mChecked);
         final SubscriptionInfo currentSir = getActiveSubscriptionInfo(mSubId);
@@ -178,11 +177,7 @@ public class CellDataPreference extends CustomDialogPreferenceCompat
     @Override
     protected void onPrepareDialogBuilder(Builder builder,
             DialogInterface.OnClickListener listener) {
-        if (mMultiSimDialog) {
-            showMultiSimDialog(builder, listener);
-        } else {
-            showDisableDialog(builder, listener);
-        }
+        showDisableDialog(builder, listener);
     }
 
     private void showDisableDialog(Builder builder,
@@ -193,6 +188,7 @@ public class CellDataPreference extends CustomDialogPreferenceCompat
                 .setNegativeButton(android.R.string.cancel, null);
     }
 
+    // TODO (b/123905421): Clean up dead code path
     private void showMultiSimDialog(Builder builder,
             DialogInterface.OnClickListener listener) {
         final SubscriptionInfo currentSir = getActiveSubscriptionInfo(mSubId);
@@ -226,14 +222,8 @@ public class CellDataPreference extends CustomDialogPreferenceCompat
         if (which != DialogInterface.BUTTON_POSITIVE) {
             return;
         }
-        if (mMultiSimDialog) {
-            getProxySubscriptionManager().get().setDefaultDataSubId(mSubId);
-            setMobileDataEnabled(true);
-            disableDataForOtherSubscriptions(mSubId);
-        } else {
-            // TODO: extend to modify policy enabled flag.
-            setMobileDataEnabled(false);
-        }
+        // TODO: extend to modify policy enabled flag.
+        setMobileDataEnabled(false);
     }
 
     @VisibleForTesting
@@ -259,7 +249,6 @@ public class CellDataPreference extends CustomDialogPreferenceCompat
     public static class CellDataState extends BaseSavedState {
         public int mSubId;
         public boolean mChecked;
-        public boolean mMultiSimDialog;
 
         public CellDataState(Parcelable base) {
             super(base);
@@ -268,7 +257,6 @@ public class CellDataPreference extends CustomDialogPreferenceCompat
         public CellDataState(Parcel source) {
             super(source);
             mChecked = source.readByte() != 0;
-            mMultiSimDialog = source.readByte() != 0;
             mSubId = source.readInt();
         }
 
@@ -276,7 +264,6 @@ public class CellDataPreference extends CustomDialogPreferenceCompat
         public void writeToParcel(Parcel dest, int flags) {
             super.writeToParcel(dest, flags);
             dest.writeByte((byte) (mChecked ? 1 : 0));
-            dest.writeByte((byte) (mMultiSimDialog ? 1 : 0));
             dest.writeInt(mSubId);
         }
 

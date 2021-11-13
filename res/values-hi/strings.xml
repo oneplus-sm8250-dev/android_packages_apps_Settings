@@ -3890,6 +3890,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"किसी तरह की आवाज़ या वाइब्रेशन न हो"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"इससे किसी तरह की आवाज़ या वाइब्रेशन नहीं होता और \'बातचीत\', सेक्शन में सबसे नीचे दिखती है"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"फ़ोन की सेटिंग के आधार पर, सूचना आने पर घंटी बज सकती है या वाइब्रेशन हो सकता है"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"कम ज़रूरी सूचनाएं दिखती हैं. दिखते समय आवाज़ और वाइब्रेशन हमेशा बंद रहते हैं."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"कम ज़रूरी सूचनाएं दिखती हैं. दिखते समय आवाज़ और वाइब्रेशन हमेशा बंद रहते हैं."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"कम ज़रूरी सूचनाएं दिखती हैं. दिखते समय आवाज़ और वाइब्रेशन हमेशा बंद रहते हैं."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"जब डिवाइस अनलॉक हो, तो स्क्रीन के सबसे ऊपर बैनर के रूप में सूचनाएं दिखाएं"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"\"<xliff:g id="APP_NAME">%1$s</xliff:g>\" की सभी सूचनाएं"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"<xliff:g id="APP_NAME">%1$s</xliff:g> की सभी सूचनाएं"</string>

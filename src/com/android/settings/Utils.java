@@ -45,6 +45,7 @@ import android.content.pm.UserInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -70,6 +71,7 @@ import android.os.ServiceManager;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.os.storage.StorageManager;
+import android.os.SystemProperties;
 import android.os.storage.VolumeInfo;
 import android.preference.PreferenceFrameLayout;
 import android.provider.ContactsContract.CommonDataKinds;
@@ -77,6 +79,9 @@ import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
 import android.provider.ContactsContract.Profile;
 import android.provider.ContactsContract.RawContacts;
+import android.provider.Settings;
+import android.provider.Telephony;
+import android.service.persistentdata.PersistentDataBlockManager;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
@@ -119,6 +124,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.codeaurora.internal.IExtTelephony;
+
 public final class Utils extends com.android.settingslib.Utils {
 
     private static final String TAG = "Settings";
@@ -133,6 +140,14 @@ public final class Utils extends com.android.settingslib.Utils {
     public static final String SETTINGS_PACKAGE_NAME = "com.android.settings";
 
     public static final String OS_PKG = "os";
+
+    public static final String KEY_SOFTWARE_VERSION = "ext_meta_software_version";
+    public static final String KEY_MODEL = "ext_model_name_from_meta";
+    public static final String KEY_HARDWARE_VERSION = "ext_hardware_version";
+    public static final String KEY_WIFI_MAC_ADDRESS = "ext_wifi_mac_address";
+    public static final String KEY_DEVICE_NAME = "ext_device_name";
+    public static final String KEY_ROM_TOTAL_SIZE = "ext_rom_total_size";
+    public static final String KEY_RAM_TOTAL_SIZE = "ext_ram_total_size";
 
     /**
      * Whether to disable the new device identifier access restrictions.
@@ -1100,6 +1115,53 @@ public final class Utils extends com.android.settingslib.Utils {
             Log.e(TAG, "Error while retrieving application info for package " + packageName, e);
         }
         return false;
+    }
+
+    public static String getLocalizedName(Context context, String resName) {
+        if(context == null){
+           return null;
+        }
+        // If can find a localized name, replace the APN name with it
+        String localizedName = null;
+        if (resName != null && !resName.isEmpty()) {
+            int resId = context.getResources().getIdentifier(resName, "string",
+                    context.getPackageName());
+            if(resId > 0){
+                try {
+                    localizedName = context.getResources().getString(resId);
+                    Log.d(TAG, "Replaced apn name with localized name");
+                } catch (NotFoundException e) {
+                    Log.e(TAG, "Got execption while getting the localized apn name.", e);
+                }
+            }
+        }
+        return localizedName;
+    }
+
+    public static boolean carrierTableFieldValidate(String field){
+        if(field == null)
+            return false;
+        if(Telephony.Carriers.AUTH_TYPE.equalsIgnoreCase(field)
+                || Telephony.Carriers.SUBSCRIPTION_ID.equalsIgnoreCase(field))
+            return true;
+        field = field.toUpperCase();
+        Class clazz = Telephony.Carriers.class;
+        try{
+            clazz.getDeclaredField(field);
+        }catch(NoSuchFieldException e){
+            Log.w(TAG, field + "is not a valid field in class Telephony.Carriers");
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isSupportCTPA(Context context) {
+        Context appContext = context.getApplicationContext();
+        return appContext.getResources().getBoolean(R.bool.config_support_CT_PA);
+    }
+
+    public static String getString(Context context, String key) {
+        return Settings.Global.getString(context.getContentResolver(), key);
     }
 
     /** Get {@link Resources} by subscription id if subscription id is valid. */

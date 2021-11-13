@@ -161,7 +161,7 @@ public class TetherSettings extends RestrictedSettingsFragment
 
         final Activity activity = getActivity();
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-        if (adapter != null) {
+        if (adapter != null && adapter.getState() == BluetoothAdapter.STATE_ON) {
             adapter.getProfileProxy(activity.getApplicationContext(), mProfileServiceListener,
                     BluetoothProfile.PAN);
         }
@@ -284,12 +284,20 @@ public class TetherSettings extends RestrictedSettingsFragment
                 updateBluetoothAndEthernetState();
                 updateUsbPreference();
             } else if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                int status = intent
+                        .getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                 if (mBluetoothEnableForTether) {
-                    switch (intent
-                            .getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)) {
+                    switch (status) {
                         case BluetoothAdapter.STATE_ON:
                             startTethering(TETHERING_BLUETOOTH);
                             mBluetoothEnableForTether = false;
+                            if (mBluetoothPan.get() == null) {
+                                BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+                                if (adapter != null) {
+                                    adapter.getProfileProxy(getActivity().getApplicationContext(),
+                                            mProfileServiceListener, BluetoothProfile.PAN);
+                                }
+                            }
                             break;
 
                         case BluetoothAdapter.STATE_OFF:
@@ -299,6 +307,18 @@ public class TetherSettings extends RestrictedSettingsFragment
 
                         default:
                             // ignore transition states
+                    }
+                } else {
+                    switch (status) {
+                        case BluetoothAdapter.STATE_ON:
+                            if (mBluetoothPan.get() == null) {
+                                BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+                                if (adapter != null) {
+                                    adapter.getProfileProxy(getActivity().getApplicationContext(),
+                                            mProfileServiceListener, BluetoothProfile.PAN);
+                                }
+                            }
+                            break;
                     }
                 }
                 updateBluetoothAndEthernetState();

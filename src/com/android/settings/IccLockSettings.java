@@ -133,6 +133,7 @@ public class IccLockSettings extends SettingsPreferenceFragment
     private int mSlotId = -1;
     private int mSubId;
     private TelephonyManager mTelephonyManager;
+    private SubscriptionManager mSubscriptionManager;
 
     // For replies from IccCard interface
     private Handler mHandler = new Handler() {
@@ -185,6 +186,7 @@ public class IccLockSettings extends SettingsPreferenceFragment
         mProxySubscriptionMgr.setLifecycle(getLifecycle());
 
         mTelephonyManager = getContext().getSystemService(TelephonyManager.class);
+        mSubscriptionManager = getContext().getSystemService(SubscriptionManager.class);
 
         addPreferencesFromResource(R.xml.sim_lock_settings);
 
@@ -276,7 +278,11 @@ public class IccLockSettings extends SettingsPreferenceFragment
         for (int i = 0; i < numSims; ++i) {
             final SubscriptionInfo subInfo = getVisibleSubscriptionInfoForSimSlotIndex(i);
             if (subInfo != null) {
-                componenterList.add(subInfo);
+                final int slot = subInfo.getSimSlotIndex();
+                if (mSubscriptionManager.getSimStateForSlotIndex(slot) !=
+                        TelephonyManager.SIM_STATE_NOT_READY) {
+                    componenterList.add(subInfo);
+                }
             }
         }
 
@@ -334,6 +340,11 @@ public class IccLockSettings extends SettingsPreferenceFragment
         final SubscriptionInfo sir = getVisibleSubscriptionInfoForSimSlotIndex(mSlotId);
         final int subId = (sir != null) ? sir.getSubscriptionId()
                 : SubscriptionManager.INVALID_SUBSCRIPTION_ID;
+        mTelephonyManager =  mTelephonyManager.createForSubscriptionId(subId);
+
+        int cardState = mTelephonyManager.getSimState();
+        boolean canInteract = cardState == TelephonyManager.SIM_STATE_READY ||
+            cardState == TelephonyManager.SIM_STATE_LOADED;
 
         if (mSubId != subId) {
             mSubId = subId;
@@ -344,10 +355,10 @@ public class IccLockSettings extends SettingsPreferenceFragment
         }
 
         if (mPinDialog != null) {
-            mPinDialog.setEnabled(sir != null);
+            mPinDialog.setEnabled(sir != null && canInteract);
         }
         if (mPinToggle != null) {
-            mPinToggle.setEnabled(sir != null);
+            mPinToggle.setEnabled(sir != null && canInteract);
 
             if (sir != null) {
                 mPinToggle.setChecked(isIccLockEnabled());

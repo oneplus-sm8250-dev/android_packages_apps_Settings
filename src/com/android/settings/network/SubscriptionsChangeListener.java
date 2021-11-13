@@ -72,6 +72,7 @@ public class SubscriptionsChangeListener extends ContentObserver {
     }
 
     public void start() {
+        Log.d(TAG, "Start");
         mSubscriptionManager.addOnSubscriptionsChangedListener(
                 mContext.getMainExecutor(), mSubscriptionsChangedListener);
         mContext.getContentResolver()

@@ -37,6 +37,8 @@ import androidx.preference.PreferenceScreen;
 import com.android.settings.R;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.network.AllowedNetworkTypesListener;
+import com.android.settings.network.SubscriptionsChangeListener;
+import com.android.settings.network.telephony.Enhanced4gBasePreferenceController;
 import com.android.settings.network.telephony.MobileNetworkUtils;
 import com.android.settings.network.telephony.NetworkSelectSettings;
 import com.android.settings.network.telephony.TelephonyBasePreferenceController;
@@ -46,12 +48,16 @@ import com.android.settings.network.telephony.TelephonyBasePreferenceController;
  */
 public class OpenNetworkSelectPagePreferenceController extends
         TelephonyBasePreferenceController implements
-        AutoSelectPreferenceController.OnNetworkSelectModeListener, LifecycleObserver {
+        AutoSelectPreferenceController.OnNetworkSelectModeListener,
+        Enhanced4gBasePreferenceController.On4gLteUpdateListener,
+        LifecycleObserver,
+        SubscriptionsChangeListener.SubscriptionsChangeListenerClient {
 
     private TelephonyManager mTelephonyManager;
     private Preference mPreference;
     private PreferenceScreen mPreferenceScreen;
     private AllowedNetworkTypesListener mAllowedNetworkTypesListener;
+    private SubscriptionsChangeListener mSubscriptionsListener;
 
     public OpenNetworkSelectPagePreferenceController(Context context, String key) {
         super(context, key);
@@ -61,7 +67,13 @@ public class OpenNetworkSelectPagePreferenceController extends
                 context.getMainExecutor());
         mAllowedNetworkTypesListener.setAllowedNetworkTypesListener(
                 () -> updatePreference());
+        mSubscriptionsListener = new SubscriptionsChangeListener(context, this);
 
+    }
+
+    @Override
+    public void on4gLteUpdated() {
+        updateState(mPreference);
     }
 
     private void updatePreference() {
@@ -83,11 +95,13 @@ public class OpenNetworkSelectPagePreferenceController extends
     @OnLifecycleEvent(ON_START)
     public void onStart() {
         mAllowedNetworkTypesListener.register(mContext, mSubId);
+        mSubscriptionsListener.start();
     }
 
     @OnLifecycleEvent(ON_STOP)
     public void onStop() {
         mAllowedNetworkTypesListener.unregister(mContext, mSubId);
+        mSubscriptionsListener.stop();
     }
 
     @Override
@@ -100,8 +114,13 @@ public class OpenNetworkSelectPagePreferenceController extends
     @Override
     public void updateState(Preference preference) {
         super.updateState(preference);
+        final int phoneType = mTelephonyManager.getPhoneType();
+        if (phoneType == TelephonyManager.PHONE_TYPE_CDMA) {
+             preference.setEnabled(false);
+        } else {
         preference.setEnabled(mTelephonyManager.getNetworkSelectionMode()
                 != TelephonyManager.NETWORK_SELECTION_MODE_AUTO);
+        }
     }
 
     @Override
@@ -141,6 +160,15 @@ public class OpenNetworkSelectPagePreferenceController extends
 
     @Override
     public void onNetworkSelectModeChanged() {
+        updateState(mPreference);
+    }
+
+    @Override
+    public void onAirplaneModeChanged(boolean airplaneModeEnabled) {
+    }
+
+    @Override
+    public void onSubscriptionsChanged() {
         updateState(mPreference);
     }
 }

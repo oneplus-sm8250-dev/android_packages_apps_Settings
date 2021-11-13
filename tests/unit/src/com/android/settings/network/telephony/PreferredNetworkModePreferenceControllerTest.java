@@ -37,6 +37,7 @@ import android.telephony.ServiceState;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 
+import androidx.lifecycle.Lifecycle;
 import androidx.preference.ListPreference;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -62,6 +63,8 @@ public class PreferredNetworkModePreferenceControllerTest {
     private CarrierConfigManager mCarrierConfigManager;
     @Mock
     private ServiceState mServiceState;
+    @Mock
+    private Lifecycle mLifecycle;
 
     private PersistableBundle mPersistableBundle;
     private PreferredNetworkModePreferenceController mController;
@@ -87,7 +90,7 @@ public class PreferredNetworkModePreferenceControllerTest {
 
         mPreference = new ListPreference(mContext);
         mController = new PreferredNetworkModePreferenceController(mContext, "mobile_data");
-        mController.init(SUB_ID);
+        mController.init(mLifecycle, SUB_ID);
         mPreference.setKey(mController.getPreferenceKey());
     }
 

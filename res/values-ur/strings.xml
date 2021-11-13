@@ -3890,6 +3890,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"کوئی آواز یا وائبریشن نہیں"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"کوئی آواز یا وائبریشن نہیں اور گفتگو کے سیکشن میں نیچے ظاہر ہوتا ہے"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"آپ کے آلہ کی ترتیبات کے مطابق وائبریٹ یا گھنٹی بج سکتی ہے"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"کم ترجیحی اطلاعات ڈسپلے کرتا ہے۔ ہمیشہ خاموش۔"</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"کم ترجیحی اطلاعات ڈسپلے کرتا ہے۔ ہمیشہ خاموش۔"</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"کم ترجیحی اطلاعات ڈسپلے کرتا ہے۔ ہمیشہ خاموش۔"</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"آلہ کے غیر مقفل ہو جانے پر، اطلاعات کو اسکرین کے اوپر بینر کے طور پر دکھائيں"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"سبھی \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" کی اطلاعات"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"سبھی <xliff:g id="APP_NAME">%1$s</xliff:g> اطلاعات"</string>

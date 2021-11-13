@@ -3890,6 +3890,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Walang tunog o pag-vibrate"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Walang tunog o pag-vibrate at lumalabas nang mas mababa sa seksyon ng pag-uusap"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Puwedeng mag-ring o mag-vibrate batay sa mga setting ng telepono"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Ipinapakita sa ibaba ng mga priyoridad na notification. Palaging naka-silent."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Ipinapakita sa ibaba ng mga priyoridad na notification. Palaging naka-silent."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Ipinapakita sa ibaba ng mga priyoridad na notification. Palaging naka-silent."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Kapag naka-unlock ang device, ipakita ang mga notification bilang banner sa itaas ng screen"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"Lahat ng notification ng \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Lahat ng notification ng <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>

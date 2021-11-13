@@ -3936,6 +3936,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Nav skaņas signāla vai vibrācijas"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Nav skaņas signāla vai vibrācijas, kā arī atrodas tālāk sarunu sadaļā"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Atkarībā no tālruņa iestatījumiem var zvanīt vai vibrēt"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Tiek rādīts zem prioritārajiem paziņojumiem. Vienmēr bez skaņas."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Tiek rādīts zem prioritārajiem paziņojumiem. Vienmēr bez skaņas."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Tiek rādīts zem prioritārajiem paziņojumiem. Vienmēr bez skaņas."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Rādīt paziņojumus reklāmkarogā ekrāna augšdaļā, ja ierīce ir atbloķēta"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"Visi lietotnes <xliff:g id="APP_NAME">%1$s</xliff:g> paziņojumi"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Visi lietotnes <xliff:g id="APP_NAME">%1$s</xliff:g> paziņojumi"</string>

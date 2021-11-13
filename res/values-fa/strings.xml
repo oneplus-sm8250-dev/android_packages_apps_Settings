@@ -3890,6 +3890,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"بدون صدا یا لرزش"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"بدون صدا و لرزش در پایین بخش مکالمه نشان داده می‌شود"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"بسته به تنظیمات ممکن است تلفن زنگ بزند یا لرزش داشته باشد"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"اعلان‌های با اولویت پایین را نشان می‌دهد. همیشه بی‌صدا."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"اعلان‌های با اولویت پایین را نشان می‌دهد. همیشه بی‌صدا."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"اعلان‌های با اولویت پایین را نشان می‌دهد. همیشه بی‌صدا."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"وقتی قفل دستگاه باز می‌شود، اعلان‌ها به‌صورت برنمایی در بالای صفحه‌نمایش نشان داده شود"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"همه اعلان‌های «<xliff:g id="APP_NAME">%1$s</xliff:g>»"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"همه اعلان‌های <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>

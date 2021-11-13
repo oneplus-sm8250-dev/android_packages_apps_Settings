@@ -3890,6 +3890,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"আওয়াজ করবে না বা ভাইব্রেট হবে না"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"আওয়াজ করবে না বা ভাইব্রেট হবে না এবং কথোপকথন বিভাগের নিচের দিকে দেখা যাবে"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"ফোনের সেটিংস অনুযায়ী ফোন রিং বা ভাইব্রেট হতে পারে"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"অগ্রাধিকারযুক্ত বিজ্ঞপ্তির নিচে দেখানো হয়। সবসময় সাইলেন্ট।"</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"অগ্রাধিকারযুক্ত বিজ্ঞপ্তির নিচে দেখানো হয়। সবসময় সাইলেন্ট।"</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"অগ্রাধিকারযুক্ত বিজ্ঞপ্তির নিচে দেখানো হয়। সবসময় সাইলেন্ট।"</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"কোনও ডিভাইস আনলক করা হলে বিজ্ঞপ্তি, স্ক্রিনের উপরে একটি ব্যানার হিসেবে দেখানো হয়"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"সমস্ত \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" বিজ্ঞপ্তি"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"সমস্ত <xliff:g id="APP_NAME">%1$s</xliff:g> সংক্রান্ত বিজ্ঞপ্তি"</string>

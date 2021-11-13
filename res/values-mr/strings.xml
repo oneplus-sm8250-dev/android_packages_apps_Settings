@@ -3891,6 +3891,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"आवाज किंवा व्हायब्रेशन नाही"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"आवाज किंवा व्हायब्रेशन नाही आणि संभाषण विभागात सर्वात तळाशी दिसते"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"फोन सेटिंग्जच्या आधारावर रिंग किंवा व्हायब्रेट होऊ शकतो"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"कमी प्राधान्य असलेल्या सूचना दाखवते. नेहमी सायलंट."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"कमी प्राधान्य असलेल्या सूचना दाखवते. नेहमी सायलंट."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"कमी प्राधान्य असलेल्या सूचना दाखवते. नेहमी सायलंट."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"डिव्हाइस अनलॉक असताना, स्क्रीनच्या सर्वात वरती बॅनर म्हणून सूचना दाखवा"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"सर्व \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" सूचना"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"सर्व <xliff:g id="APP_NAME">%1$s</xliff:g> वरील सूचना"</string>
