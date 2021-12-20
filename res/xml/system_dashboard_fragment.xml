@@ -36,6 +36,16 @@
         settings:controller="com.android.settings.gestures.GesturesSettingPreferenceController"/>
 
     <Preference
+        android:key="audio_dolby_atmos"
+        android:icon="@drawable/ic_dolby_atmos"
+        android:title="@string/dolby_title"
+        android:summary="@string/dolby_summary">
+        <intent
+             android:targetPackage="com.oneplus.sound.tuner"
+             android:targetClass="com.oneplus.sound.tuner.panoramic.DolbyPanoramicSoundActivity" />
+    </Preference>
+
+    <Preference
         android:key="date_time_settings"
         android:title="@string/date_and_time"
         android:icon="@drawable/ic_settings_date_time"
