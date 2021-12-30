@@ -211,6 +211,12 @@
         android:title="@string/emergency_tone_title"
         android:summary="%s"
         android:order="-10"/>
+        <!-- Call connected tones -->
+
+        <SwitchPreference
+          android:key="call_connected_tones"
+          android:title="@string/call_connected_tones_title" />
+
 
     <Preference
         android:key="sound_work_settings"

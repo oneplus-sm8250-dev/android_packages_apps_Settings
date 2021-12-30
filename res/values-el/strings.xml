@@ -3898,6 +3898,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Χωρίς ήχο ή δόνηση"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Χωρίς ήχο ή δόνηση και εμφανίζεται χαμηλά στην ενότητα συζητήσεων"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Ενδέχεται να κουδουνίζει ή να δονείται βάσει των ρυθμίσεων του τηλεφώνου"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Εμφανίζεται κάτω από ειδοποιήσεις προτεραιότητας. Πάντα σε σίγαση."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Εμφανίζεται κάτω από ειδοποιήσεις προτεραιότητας. Πάντα σε σίγαση."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Εμφανίζεται κάτω από ειδοποιήσεις προτεραιότητας. Πάντα σε σίγαση."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Όταν η συσκευή είναι ξεκλειδωμένη, οι ειδοποιήσεις εμφανίζονται ως banner επάνω στην οθόνη"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"Όλες οι ειδοποιήσεις \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Όλες οι ειδοποιήσεις <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>

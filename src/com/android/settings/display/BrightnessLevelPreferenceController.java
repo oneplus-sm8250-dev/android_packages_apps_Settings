@@ -104,8 +104,8 @@ public class BrightnessLevelPreferenceController extends AbstractPreferenceContr
         if (lifecycle != null) {
             lifecycle.addObserver(this);
         }
-        final PowerManager powerManager = context.getSystemService(PowerManager.class);
 
+        final PowerManager powerManager = context.getSystemService(PowerManager.class);
         mMinVrBrightness = powerManager.getBrightnessConstraint(
                 PowerManager.BRIGHTNESS_CONSTRAINT_TYPE_MINIMUM_VR);
         mMaxVrBrightness = powerManager.getBrightnessConstraint(

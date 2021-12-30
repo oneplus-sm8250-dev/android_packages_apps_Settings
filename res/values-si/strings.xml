@@ -3898,6 +3898,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"හඬක් හෝ කම්පනයක් නැත"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"හඬක් හෝ කම්පනයක් නැති අතර සංවාද කොටසේ පහළම දිස් වේ"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"දුරකථන සැකසීම් මත පදනම්ව නාද කිරීමට හෝ කම්පනය කිරීමට හැකිය"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"ප්‍රමුඛතා දැනුම්දීම්වලට පහළින් සංදර්ශන වෙයි. සැම විටම නිහඬයි."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"ප්‍රමුඛතා දැනුම්දීම්වලට පහළින් සංදර්ශන වෙයි. සැම විටම නිහඬයි."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"ප්‍රමුඛතා දැනුම්දීම්වලට පහළින් සංදර්ශන වෙයි. සැම විටම නිහඬයි."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"උපාංගය අඟුලු අරිනු ලැබූ විට, තිරයේ මුදුනින් දැනුම්දීම් බැනරයක් ලෙස පෙන්වන්න"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"සියලු \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" දැනුම් දීම්"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"සියලු <xliff:g id="APP_NAME">%1$s</xliff:g> දැනුම් දීම්"</string>
