@@ -114,6 +114,13 @@ public class ApnPreference extends Preference implements CompoundButton.OnChecke
         sSelectedKey = getKey();
     }
 
+
+    // ApnPreference.sSelectedKey static variable is shared for MSim case,
+    // need be initialized according to preferred apn id per sub
+    public static void setSelectedKey(String preferredApnKey) {
+        sSelectedKey = preferredApnKey;
+    }
+
     /**
      * Change the preference status.
      */

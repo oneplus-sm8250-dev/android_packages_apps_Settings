@@ -93,8 +93,9 @@ public class BluetoothCodecDialogPreferenceController extends
         int codecPriorityValue = BluetoothCodecConfig.CODEC_PRIORITY_DEFAULT;
         switch (index) {
             case 0:
-                codecTypeValue = getHighestCodec(getSelectableConfigs(
-                    mBluetoothA2dp.getActiveDevice()));
+                final BluetoothDevice activeDevice = mBluetoothA2dp.getActiveDevice();
+                codecTypeValue = getHighestCodec(mBluetoothA2dp, activeDevice,
+                        getSelectableConfigs(activeDevice));
                 codecPriorityValue = BluetoothCodecConfig.CODEC_PRIORITY_HIGHEST;
                 break;
             case 1:
@@ -115,6 +116,14 @@ public class BluetoothCodecDialogPreferenceController extends
                 break;
             case 5:
                 codecTypeValue = BluetoothCodecConfig.SOURCE_CODEC_TYPE_LDAC;
+                codecPriorityValue = BluetoothCodecConfig.CODEC_PRIORITY_HIGHEST;
+                break;
+            case 6:
+                codecTypeValue = BluetoothCodecConfig.SOURCE_CODEC_TYPE_APTX_ADAPTIVE;
+                codecPriorityValue = BluetoothCodecConfig.CODEC_PRIORITY_HIGHEST;
+                break;
+            case 7:
+                codecTypeValue = BluetoothCodecConfig.SOURCE_CODEC_TYPE_APTX_TWSP;
                 codecPriorityValue = BluetoothCodecConfig.CODEC_PRIORITY_HIGHEST;
                 break;
             default:
@@ -147,6 +156,11 @@ public class BluetoothCodecDialogPreferenceController extends
         mCallback.onBluetoothCodecChanged();
     }
 
+    @Override
+    public void onHDAudioEnabled(boolean enabled) {
+        writeConfigurationValues(/* index= */ 0);
+    }
+
     private List<Integer> getIndexFromConfig(BluetoothCodecConfig[] configs) {
         List<Integer> indexArray = new ArrayList<>();
         for (int i = 0; i < configs.length; i++) {
@@ -171,8 +185,14 @@ public class BluetoothCodecDialogPreferenceController extends
             case BluetoothCodecConfig.SOURCE_CODEC_TYPE_APTX_HD:
                 index = 4;
                 break;
+            case BluetoothCodecConfig.SOURCE_CODEC_TYPE_APTX_ADAPTIVE:
+                index = 6;
+                break;
             case BluetoothCodecConfig.SOURCE_CODEC_TYPE_LDAC:
                 index = 5;
+                break;
+            case BluetoothCodecConfig.SOURCE_CODEC_TYPE_APTX_TWSP:
+                index = 7;
                 break;
             default:
                 Log.e(TAG, "Unsupported config:" + config);

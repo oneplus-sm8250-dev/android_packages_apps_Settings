@@ -3900,6 +3900,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"不震動或發出聲音"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"不震動或發出聲音，並顯示在對話區的下方"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"根據手機的設定響鈴或震動"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"顯示在優先通知下方，且一律不發出音效。"</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"顯示在優先通知下方，且一律不發出音效。"</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"顯示在優先通知下方，且一律不發出音效。"</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"裝置處於解鎖狀態時，在螢幕頂端以橫幅形式顯示通知"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」的所有通知"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」的所有通知"</string>

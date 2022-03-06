@@ -20,12 +20,18 @@ import static androidx.lifecycle.Lifecycle.Event.ON_START;
 import static androidx.lifecycle.Lifecycle.Event.ON_STOP;
 
 import android.content.Context;
+import android.database.ContentObserver;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PersistableBundle;
+import android.provider.Settings;
 import android.telephony.CarrierConfigManager;
+import android.telephony.PhoneStateListener;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -59,6 +65,9 @@ public class EnabledNetworkModePreferenceController extends
     private CarrierConfigManager mCarrierConfigManager;
     private PreferenceEntriesBuilder mBuilder;
     private SubscriptionsChangeListener mSubscriptionsListener;
+    private PhoneCallStateListener mPhoneStateListener;
+    @VisibleForTesting
+    Integer mCallState;
 
     public EnabledNetworkModePreferenceController(Context context, String key) {
         super(context, key);
@@ -94,6 +103,10 @@ public class EnabledNetworkModePreferenceController extends
         if (mAllowedNetworkTypesListener == null) {
             return;
         }
+        if (mPhoneStateListener != null) {
+            mPhoneStateListener.register(mContext, mSubId);
+        }
+
         mAllowedNetworkTypesListener.register(mContext, mSubId);
     }
 
@@ -102,6 +115,9 @@ public class EnabledNetworkModePreferenceController extends
         mSubscriptionsListener.stop();
         if (mAllowedNetworkTypesListener == null) {
             return;
+        }
+        if (mPhoneStateListener != null) {
+            mPhoneStateListener.unregister();
         }
         mAllowedNetworkTypesListener.unregister(mContext, mSubId);
     }
@@ -125,6 +141,7 @@ public class EnabledNetworkModePreferenceController extends
         listPreference.setEntryValues(mBuilder.getEntryValues());
         listPreference.setValue(Integer.toString(mBuilder.getSelectedEntryValue()));
         listPreference.setSummary(mBuilder.getSummary());
+        listPreference.setEnabled(isCallStateIdle());
     }
 
     @Override
@@ -148,6 +165,9 @@ public class EnabledNetworkModePreferenceController extends
                 .createForSubscriptionId(mSubId);
         mBuilder = new PreferenceEntriesBuilder(mContext, mSubId);
 
+        if (mPhoneStateListener == null) {
+            mPhoneStateListener = new PhoneCallStateListener();
+        }
         if (mAllowedNetworkTypesListener == null) {
             mAllowedNetworkTypesListener = new AllowedNetworkTypesListener(
                     mContext.getMainExecutor());
@@ -353,7 +373,7 @@ public class EnabledNetworkModePreferenceController extends
                     if (entryValuesInt.length < 3) {
                         throw new IllegalArgumentException("ENABLED_NETWORKS_CHOICES index error.");
                     }
-                    add5gEntry(addNrToLteNetworkType(entryValuesInt[0]));
+                    add5gLteEntry(addNrToLteNetworkType(entryValuesInt[0]));
                     addLteEntry(entryValuesInt[0]);
                     add3gEntry(entryValuesInt[1]);
                     add2gEntry(entryValuesInt[2]);
@@ -589,7 +609,9 @@ public class EnabledNetworkModePreferenceController extends
                 case TelephonyManagerConstants.NETWORK_MODE_NR_LTE_WCDMA:
                     setSelectedEntry(
                             TelephonyManagerConstants.NETWORK_MODE_NR_LTE_GSM_WCDMA);
-                    setSummary(getResourcesForSubId().getString(R.string.network_5G_recommended));
+                    setSummary((mShow4gForLTE ? getResourcesForSubId().getString(R.string.network_5G_recommended)
+                            : getResourcesForSubId().getString(R.string.network_5G_lte))
+                            + getResourcesForSubId().getString(R.string.network_5G_recommended));
                     break;
                 case TelephonyManagerConstants.NETWORK_MODE_NR_LTE_TDSCDMA:
                 case TelephonyManagerConstants.NETWORK_MODE_NR_LTE_TDSCDMA_GSM:
@@ -598,11 +620,15 @@ public class EnabledNetworkModePreferenceController extends
                 case TelephonyManagerConstants.NETWORK_MODE_NR_LTE_TDSCDMA_CDMA_EVDO_GSM_WCDMA:
                     setSelectedEntry(TelephonyManagerConstants
                             .NETWORK_MODE_NR_LTE_TDSCDMA_CDMA_EVDO_GSM_WCDMA);
-                    setSummary(getResourcesForSubId().getString(R.string.network_5G_recommended));
+                    setSummary((mShow4gForLTE ? getResourcesForSubId().getString(R.string.network_5G_recommended)
+                            : getResourcesForSubId().getString(R.string.network_5G_lte))
+                            + getResourcesForSubId().getString(R.string.network_5G_recommended));
                     break;
                 case TelephonyManagerConstants.NETWORK_MODE_NR_LTE_CDMA_EVDO:
                     setSelectedEntry(TelephonyManagerConstants.NETWORK_MODE_NR_LTE_CDMA_EVDO);
-                    setSummary(getResourcesForSubId().getString(R.string.network_5G_recommended));
+                    setSummary((mShow4gForLTE ? getResourcesForSubId().getString(R.string.network_5G_recommended)
+                            : getResourcesForSubId().getString(R.string.network_5G_lte))
+                            + getResourcesForSubId().getString(R.string.network_5G_recommended));
                     break;
                 case TelephonyManagerConstants.NETWORK_MODE_NR_LTE_CDMA_EVDO_GSM_WCDMA:
                     setSelectedEntry(
@@ -612,8 +638,9 @@ public class EnabledNetworkModePreferenceController extends
                             || MobileNetworkUtils.isWorldMode(mContext, mSubId)) {
                         setSummary(R.string.network_global);
                     } else {
-                        setSummary(getResourcesForSubId().getString(
-                                R.string.network_5G_recommended));
+                        setSummary((mShow4gForLTE ? getResourcesForSubId().getString(R.string.network_5G_recommended)
+                                : getResourcesForSubId().getString(R.string.network_5G_lte))
+                                + getResourcesForSubId().getString(R.string.network_5G_recommended));
                     }
                     break;
                 default:
@@ -706,6 +733,23 @@ public class EnabledNetworkModePreferenceController extends
             boolean isNRValue = value >= TelephonyManagerConstants.NETWORK_MODE_NR_ONLY;
             if (showNrList() && isNRValue) {
                 mEntries.add(getResourcesForSubId().getString(R.string.network_5G_recommended));
+                mEntriesValue.add(value);
+                mIs5gEntryDisplayed = true;
+            } else {
+                mIs5gEntryDisplayed = false;
+                Log.d(LOG_TAG, "Hide 5G option. "
+                        + " supported5GRadioAccessFamily: " + mSupported5gRadioAccessFamily
+                        + " allowed5GNetworkType: " + mAllowed5gNetworkType
+                        + " isNRValue: " + isNRValue);
+            }
+        }
+
+        // This entry is used to support for 5G/LTE display in resource overlay
+        private void add5gLteEntry(int value) {
+            boolean isNRValue = value >= TelephonyManagerConstants.NETWORK_MODE_NR_ONLY;
+            if (showNrList() && isNRValue) {
+                mEntries.add(mContext.getString(R.string.network_5G_lte)
+                        + mContext.getString(R.string.network_5G_recommended));
                 mEntriesValue.add(value);
                 mIs5gEntryDisplayed = true;
             } else {
@@ -835,5 +879,43 @@ public class EnabledNetworkModePreferenceController extends
     @Override
     public void onSubscriptionsChanged() {
         mBuilder.updateConfig();
+    }
+
+    private boolean isCallStateIdle() {
+        boolean callStateIdle = true;
+        if (mCallState != null && mCallState != TelephonyManager.CALL_STATE_IDLE) {
+            callStateIdle = false;
+        }
+        Log.d(LOG_TAG, "isCallStateIdle:" + callStateIdle);
+        return callStateIdle;
+    }
+
+    private class PhoneCallStateListener extends PhoneStateListener {
+
+        PhoneCallStateListener() {
+            super(Looper.getMainLooper());
+        }
+
+        private TelephonyManager mTelephonyManager;
+
+        @Override
+        public void onCallStateChanged(int state, String incomingNumber) {
+            mCallState = state;
+            updateState(mPreference);
+        }
+
+        public void register(Context context, int subId) {
+            mTelephonyManager = context.getSystemService(TelephonyManager.class);
+            if (SubscriptionManager.isValidSubscriptionId(subId)) {
+                mTelephonyManager = mTelephonyManager.createForSubscriptionId(subId);
+            }
+            mTelephonyManager.listen(this, PhoneStateListener.LISTEN_CALL_STATE);
+
+        }
+
+        public void unregister() {
+            mCallState = null;
+            mTelephonyManager.listen(this, PhoneStateListener.LISTEN_NONE);
+        }
     }
 }

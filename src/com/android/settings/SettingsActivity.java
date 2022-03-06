@@ -72,7 +72,6 @@ import com.google.android.setupcompat.util.WizardManagerHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class SettingsActivity extends SettingsBaseActivity
         implements PreferenceManager.OnPreferenceTreeClickListener,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
@@ -153,6 +152,7 @@ public class SettingsActivity extends SettingsBaseActivity
 
     private CharSequence mInitialTitle;
     private int mInitialTitleResId;
+    private SmqSettings mSMQ;
 
     private BroadcastReceiver mDevelopmentSettingsListener;
 
@@ -244,6 +244,8 @@ public class SettingsActivity extends SettingsBaseActivity
         if (intent.hasExtra(EXTRA_UI_OPTIONS)) {
             getWindow().setUiOptions(intent.getIntExtra(EXTRA_UI_OPTIONS, 0));
         }
+
+        mSMQ = new SmqSettings(getApplicationContext());
 
         // Getting Intent properties can only be done after the super.onCreate(...)
         final String initialFragmentName = getInitialFragmentName(intent);
@@ -576,7 +578,16 @@ public class SettingsActivity extends SettingsBaseActivity
      */
     private void switchToFragment(String fragmentName, Bundle args, boolean validate,
             int titleResId, CharSequence title) {
+        if (fragmentName.equals(getString(R.string.qtifeedback_intent_action))){
+             final Intent newIntent = new Intent(getString(R.string.qtifeedback_intent_action));
+             newIntent.addCategory("android.intent.category.DEFAULT");
+             startActivity(newIntent);
+             finish();
+             return;
+        }
+
         Log.d(LOG_TAG, "Switching to fragment " + fragmentName);
+
         if (validate && !isValidFragment(fragmentName)) {
             throw new IllegalArgumentException("Invalid fragment for this activity: "
                     + fragmentName);
@@ -620,6 +631,10 @@ public class SettingsActivity extends SettingsBaseActivity
                 pm.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH), isAdmin)
                 || somethingChanged;
 
+        if(mSMQ.isShowSmqSettings()){
+            somethingChanged = setTileEnabled(changedList, new ComponentName(packageName, Settings.SMQQtiFeedbackActivity.class.getName()), mSMQ.isShowSmqSettings(), isAdmin) || somethingChanged;
+        }
+
         // Enable DataUsageSummaryActivity if the data plan feature flag is turned on otherwise
         // enable DataPlanUsageSummaryActivity.
         somethingChanged = setTileEnabled(changedList,
@@ -634,7 +649,7 @@ public class SettingsActivity extends SettingsBaseActivity
                 isAdmin) || somethingChanged;
 
         somethingChanged = setTileEnabled(changedList, new ComponentName(packageName,
-                        Settings.PowerUsageSummaryActivity.class.getName()),
+                Settings.PowerUsageSummaryActivity.class.getName()),
                 mBatteryPresent, isAdmin) || somethingChanged;
 
         somethingChanged = setTileEnabled(changedList, new ComponentName(packageName,

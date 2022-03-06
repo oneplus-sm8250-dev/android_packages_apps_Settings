@@ -63,7 +63,6 @@ public class BluetoothPairingController implements OnCheckedChangeListener,
     private int mInitiator;
     private String mDeviceName;
     private LocalBluetoothProfile mPbapClientProfile;
-    private boolean mPbapAllowed;
 
     /**
      * Creates an instance of a BluetoothPairingController.
@@ -95,20 +94,14 @@ public class BluetoothPairingController implements OnCheckedChangeListener,
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            mPbapAllowed = true;
+            mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_ALLOWED);
         } else {
-            mPbapAllowed = false;
+            mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_REJECTED);
         }
     }
 
     @Override
     public void onDialogPositiveClick(BluetoothPairingDialogFragment dialog) {
-        if (mPbapAllowed) {
-            mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_ALLOWED);
-        } else {
-            mDevice.setPhonebookAccessPermission(BluetoothDevice.ACCESS_REJECTED);
-        }
-
         if (getDialogType() == USER_ENTRY_DIALOG) {
             onPair(mUserInput);
         } else {

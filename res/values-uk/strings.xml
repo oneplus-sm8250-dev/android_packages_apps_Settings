@@ -3990,6 +3990,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Без звуку чи вібрації"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Без звуку чи вібрації, з\'являється нижче в розділі розмов"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Може дзвонити або вібрувати залежно від налаштувань телефона"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Показуються під пріоритетними сповіщеннями. Завжди без звуку."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Показуються під пріоритетними сповіщеннями. Завжди без звуку."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Показуються під пріоритетними сповіщеннями. Завжди без звуку."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Коли пристрій розблоковано, показувати сповіщення як банер угорі екрана"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"<xliff:g id="APP_NAME">%1$s</xliff:g>: усі сповіщення"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Усі сповіщення від додатка <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>

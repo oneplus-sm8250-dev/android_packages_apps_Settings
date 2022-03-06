@@ -3899,6 +3899,9 @@
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Sin sonido ni vibración, y se muestra más abajo en la sección de conversaciones"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Puede sonar o vibrar según los ajustes del teléfono"</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Cuando el dispositivo esté desbloqueado, muestra las notificaciones en la parte superior"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Muestra las notificaciones con prioridad baja. Siempre en silencio."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Muestra las notificaciones con prioridad baja. Siempre en silencio."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Muestra las notificaciones con prioridad baja. Siempre en silencio."</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"Todas las notificaciones de \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Todas las notificaciones de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="default_notification_assistant" msgid="243718059890346442">"Notificaciones adaptativas"</string>
@@ -4798,6 +4801,8 @@
       <item quantity="one">1 segundo</item>
     </plurals>
     <string name="automatic_storage_manager_settings" msgid="519158151463974656">"Gestionar almacenamiento"</string>
+    <string name="qtifeedback_settings_title">Comentarios sobre el hardware</string>
+    <string name="qtifeedback_settings_subtitle">Informes de Qualcomm Technologies, Inc</string>
     <string name="automatic_storage_manager_text" msgid="6900593059927987273">"Para liberar espacio, el Administrador de Almacenamiento borrará de tu dispositivo las fotos y vídeos que tengan copia de seguridad."</string>
     <string name="automatic_storage_manager_days_title" msgid="5077286114860539367">"Borrar fotos y vídeos"</string>
     <string name="automatic_storage_manager_preference_title" msgid="3483357910142595444">"Administrador de almacenamiento"</string>

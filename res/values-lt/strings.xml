@@ -3990,6 +3990,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Neskamba ir nevibruoja"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Neskamba, nevibruoja ir rodoma apatinėje pokalbių skilties dalyje"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Gali skambėti arba vibruoti, atsižvelgiant į telefono nustatymus"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Pateikiami po prioritetiniais pranešimais. Visada nutildyti."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Pateikiami po prioritetiniais pranešimais. Visada nutildyti."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Pateikiami po prioritetiniais pranešimais. Visada nutildyti."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Kai įrenginys atrakintas, pranešimai rodomi kaip reklamjuostė ekrano viršuje"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"Visi „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pranešimai"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Visi „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pranešimai"</string>

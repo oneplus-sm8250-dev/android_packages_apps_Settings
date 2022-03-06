@@ -40,6 +40,7 @@ import androidx.preference.Preference;
 
 import com.android.internal.telephony.OperatorInfo;
 import com.android.settings.R;
+import com.android.settings.Utils;
 
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +60,7 @@ public class NetworkOperatorPreference extends Preference {
     private List<String> mForbiddenPlmns;
     private int mLevel = LEVEL_NONE;
     private boolean mShow4GForLTE;
-    private boolean mUseNewApi;
+    private boolean mIsAdvancedScanSupported;
 
     public NetworkOperatorPreference(Context context, CellInfo cellinfo,
             List<String> forbiddenPlmns, boolean show4GForLTE) {
@@ -78,8 +79,8 @@ public class NetworkOperatorPreference extends Preference {
         super(context);
         mForbiddenPlmns = forbiddenPlmns;
         mShow4GForLTE = show4GForLTE;
-        mUseNewApi = context.getResources().getBoolean(
-                com.android.internal.R.bool.config_enableNewAutoSelectNetworkUI);
+        mIsAdvancedScanSupported = TelephonyUtils.isAdvancedPlmnScanSupported(context);
+        Log.d(TAG, "mIsAdvancedScanSupported: " + mIsAdvancedScanSupported);
     }
 
     /**
@@ -253,7 +254,7 @@ public class NetworkOperatorPreference extends Preference {
     }
 
     private void updateIcon(int level) {
-        if (!mUseNewApi || level < 0 || level >= NUM_SIGNAL_STRENGTH_BINS) {
+        if (!mIsAdvancedScanSupported || level < 0 || level >= NUM_SIGNAL_STRENGTH_BINS) {
             return;
         }
         final Context context = getContext();
