@@ -3913,6 +3913,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Sense so ni vibració"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Sense so ni vibració i es mostra més avall a la secció de converses"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Pot sonar o vibrar en funció de la configuració del telèfon"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Es mostra a sota de les notificacions prioritàries. Sempre silenciosa."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Es mostra a sota de les notificacions prioritàries. Sempre silenciosa."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Es mostra a sota de les notificacions prioritàries. Sempre silenciosa."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Quan el dispositiu estigui desbloquejat, mostra les notificacions en forma de bàner a la part superior de la pantalla"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"Totes les notificacions de: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Totes les notificacions de l\'aplicació <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>

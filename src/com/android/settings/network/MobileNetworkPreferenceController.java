@@ -21,6 +21,7 @@ import static android.os.UserManager.DISALLOW_CONFIG_MOBILE_NETWORKS;
 import static androidx.lifecycle.Lifecycle.Event;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -28,6 +29,8 @@ import android.os.UserManager;
 import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.ServiceState;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyCallback;
 import android.telephony.TelephonyManager;
 
@@ -42,8 +45,10 @@ import com.android.settings.network.telephony.MobileNetworkActivity;
 import com.android.settings.network.telephony.MobileNetworkUtils;
 import com.android.settingslib.RestrictedLockUtilsInternal;
 import com.android.settingslib.RestrictedPreference;
-import com.android.settingslib.Utils;
+import com.android.settings.Utils;
 import com.android.settingslib.core.AbstractPreferenceController;
+
+import java.util.List;
 
 public class MobileNetworkPreferenceController extends AbstractPreferenceController
         implements PreferenceControllerMixin, LifecycleObserver {
@@ -57,8 +62,11 @@ public class MobileNetworkPreferenceController extends AbstractPreferenceControl
     private Preference mPreference;
     @VisibleForTesting
     MobileNetworkTelephonyCallback mTelephonyCallback;
+    private SubscriptionManager mSubscriptionManager;
 
     private BroadcastReceiver mAirplanModeChangedReceiver;
+
+    private String mSummary;
 
     public MobileNetworkPreferenceController(Context context) {
         super(context);
@@ -69,9 +77,11 @@ public class MobileNetworkPreferenceController extends AbstractPreferenceControl
         mAirplanModeChangedReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                updateDisplayName();
                 updateState(mPreference);
             }
         };
+        mSubscriptionManager = SubscriptionManager.from(context);
     }
 
     @Override
@@ -102,12 +112,15 @@ public class MobileNetworkPreferenceController extends AbstractPreferenceControl
             TelephonyCallback.ServiceStateListener {
         @Override
         public void onServiceStateChanged(ServiceState serviceState) {
+            updateDisplayName();
             updateState(mPreference);
         }
     }
 
     @OnLifecycleEvent(Event.ON_START)
     public void onStart() {
+        if (mSubscriptionManager != null)
+            mSubscriptionManager.addOnSubscriptionsChangedListener(mOnSubscriptionsChangeListener);
         if (isAvailable()) {
             if (mTelephonyCallback == null) {
                 mTelephonyCallback = new MobileNetworkTelephonyCallback();
@@ -121,11 +134,53 @@ public class MobileNetworkPreferenceController extends AbstractPreferenceControl
         }
     }
 
+    private void updateDisplayName() {
+        if (mPreference != null) {
+            List<SubscriptionInfo> list = mSubscriptionManager.getActiveSubscriptionInfoList();
+            if (list != null && !list.isEmpty()) {
+                boolean useSeparator = false;
+                StringBuilder builder = new StringBuilder();
+                for (SubscriptionInfo subInfo : list) {
+                    if (isSubscriptionInService(subInfo.getSubscriptionId())) {
+                        if (useSeparator) builder.append(", ");
+                        builder.append(mTelephonyManager.getNetworkOperatorName
+                                (subInfo.getSubscriptionId()));
+                        useSeparator = true;
+                    }
+                }
+                mSummary = builder.toString();
+            } else {
+                mSummary = mTelephonyManager.getNetworkOperatorName();
+            }
+        }
+    }
+
+    private boolean isSubscriptionInService(int subId) {
+        if (mTelephonyManager != null) {
+            if (mTelephonyManager.getServiceStateForSubscriber(subId).getState()
+                    == ServiceState.STATE_IN_SERVICE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private final SubscriptionManager.OnSubscriptionsChangedListener mOnSubscriptionsChangeListener
+            = new SubscriptionManager.OnSubscriptionsChangedListener() {
+        @Override
+        public void onSubscriptionsChanged() {
+             updateDisplayName();
+             updateState(mPreference);
+        }
+    };
+
     @OnLifecycleEvent(Event.ON_STOP)
     public void onStop() {
         if (mTelephonyCallback != null) {
             mTelephonyManager.unregisterTelephonyCallback(mTelephonyCallback);
         }
+        mSubscriptionManager
+                .removeOnSubscriptionsChangedListener(mOnSubscriptionsChangeListener);
         if (mAirplanModeChangedReceiver != null) {
             mContext.unregisterReceiver(mAirplanModeChangedReceiver);
         }
@@ -155,6 +210,6 @@ public class MobileNetworkPreferenceController extends AbstractPreferenceControl
 
     @Override
     public CharSequence getSummary() {
-        return MobileNetworkUtils.getCurrentCarrierNameForDisplay(mContext);
+        return mSummary;
     }
 }

@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.pm.UserInfo;
 import android.os.Bundle;
 import android.os.UserManager;
+import android.util.Log;
 import android.view.View;
 
 import com.android.settings.R;
@@ -35,8 +36,11 @@ import com.android.settings.deviceinfo.FccEquipmentIdPreferenceController;
 import com.android.settings.deviceinfo.FeedbackPreferenceController;
 import com.android.settings.deviceinfo.IpAddressPreferenceController;
 import com.android.settings.deviceinfo.ManualPreferenceController;
+import com.android.settings.deviceinfo.PhoneNumberPreferenceController;
 import com.android.settings.deviceinfo.RegulatoryInfoPreferenceController;
 import com.android.settings.deviceinfo.SafetyInfoPreferenceController;
+import com.android.settings.deviceinfo.SoftwareVersionPreferenceController;
+import com.android.settings.deviceinfo.StorageSizePreferenceController;
 import com.android.settings.deviceinfo.UptimePreferenceController;
 import com.android.settings.deviceinfo.WifiMacAddressPreferenceController;
 import com.android.settings.deviceinfo.imei.ImeiInfoPreferenceController;
@@ -51,12 +55,29 @@ import com.android.settingslib.widget.LayoutPreference;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+
+import com.android.internal.telephony.IccCardConstants;
+import com.android.internal.telephony.TelephonyIntents;
+
 @SearchIndexable
 public class MyDeviceInfoFragment extends DashboardFragment
         implements DeviceNamePreferenceController.DeviceNamePreferenceHost {
 
     private static final String LOG_TAG = "MyDeviceInfoFragment";
     private static final String KEY_MY_DEVICE_INFO_HEADER = "my_device_info_header";
+
+    private final BroadcastReceiver mSimStateReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (TelephonyIntents.ACTION_SIM_STATE_CHANGED.equals(action)) {
+                String state = intent.getStringExtra(IccCardConstants.INTENT_KEY_ICC_STATE);
+                Log.d(LOG_TAG, "Received ACTION_SIM_STATE_CHANGED: " + state);
+                updatePreferenceStates();
+            }
+        }
+    };
 
     private BuildNumberPreferenceController mBuildNumberPreferenceController;
 
@@ -77,12 +98,36 @@ public class MyDeviceInfoFragment extends DashboardFragment
         use(DeviceNamePreferenceController.class).setHost(this /* parent */);
         mBuildNumberPreferenceController = use(BuildNumberPreferenceController.class);
         mBuildNumberPreferenceController.setHost(this /* parent */);
+        use(PhoneNumberPreferenceController.class).init(getSettingsLifecycle());
     }
 
     @Override
     public void onStart() {
         super.onStart();
         initHeader();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Context context = getContext();
+        if (context != null) {
+            context.unregisterReceiver(mSimStateReceiver);
+        } else {
+            Log.i(LOG_TAG, "context already null, not unregistering SimStateReceiver");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Context context = getContext();
+        if (context != null) {
+            context.registerReceiver(mSimStateReceiver,
+                    new IntentFilter(TelephonyIntents.ACTION_SIM_STATE_CHANGED));
+        } else {
+            Log.i(LOG_TAG, "context is null, not registering SimStateReceiver");
+        }
     }
 
     @Override
@@ -113,6 +158,8 @@ public class MyDeviceInfoFragment extends DashboardFragment
         controllers.add(new FeedbackPreferenceController(fragment, context));
         controllers.add(new FccEquipmentIdPreferenceController(context));
         controllers.add(new UptimePreferenceController(context, lifecycle));
+        controllers.add(new SoftwareVersionPreferenceController(context));
+        controllers.add(new StorageSizePreferenceController(context));
         return controllers;
     }
 

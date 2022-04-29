@@ -3959,6 +3959,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Без звука и вибрирања"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Без звука и вибрирања и приказује се у наставку одељка за конверзације"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Може да звони или вибрира у зависности од подешавања телефона"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Приказује се испод приоритетних обавештења. Увек нечујно."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Приказује се испод приоритетних обавештења. Увек нечујно."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Приказује се испод приоритетних обавештења. Увек нечујно."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Када је уређај откључан, приказује обавештења као банер у врху екрана"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"Сва обавештења апликације <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Сва обавештења апликације <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>

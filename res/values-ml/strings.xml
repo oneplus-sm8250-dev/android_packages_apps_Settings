@@ -3913,6 +3913,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"ശബ്ദമോ വൈബ്രേഷനോ ഇല്ല"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"ശബ്‌ദമോ വൈബ്രേഷനോ ഇല്ല, സംഭാഷണ വിഭാഗത്തിന് താഴെയായി ദൃശ്യമാകും"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"ഫോൺ ക്രമീകരണം അടിസ്ഥാനമാക്കി റിംഗ്/വൈബ്രേറ്റ് ചെയ്യും"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"കുറഞ്ഞ പ്രാധാന്യമുള്ള മുൻഗണനാ അറിയിപ്പുകൾ പ്രദർശിപ്പിക്കുന്നു. എപ്പോഴും നിശബ്‌ദം."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"കുറഞ്ഞ പ്രാധാന്യമുള്ള മുൻഗണനാ അറിയിപ്പുകൾ പ്രദർശിപ്പിക്കുന്നു. എപ്പോഴും നിശബ്‌ദം."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"കുറഞ്ഞ പ്രാധാന്യമുള്ള മുൻഗണനാ അറിയിപ്പുകൾ പ്രദർശിപ്പിക്കുന്നു. എപ്പോഴും നിശബ്‌ദം."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"ഉപകരണം അൺലോക്ക് ചെയ്‌തിരിക്കുമ്പോൾ അറിയിപ്പുകളെ സ്ക്രീനിന്റെ മുകളിൽ ഒരു ബാനറായി കാണിക്കുക"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"എല്ലാ \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" അറിയിപ്പുകളും"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"എല്ലാ <xliff:g id="APP_NAME">%1$s</xliff:g> അറിയിപ്പുകളും"</string>

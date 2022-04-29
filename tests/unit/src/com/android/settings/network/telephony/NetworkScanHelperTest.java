@@ -92,7 +92,7 @@ public class NetworkScanHelperTest {
 
         mNetworkScanExecutor = Executors.newFixedThreadPool(1);
 
-        mNetworkScanHelper = new NetworkScanHelper(mTelephonyManager,
+        mNetworkScanHelper = new NetworkScanHelper(null, mTelephonyManager,
                 mNetworkScanCallback, mNetworkScanExecutor);
 
         mNetworkScan = spy(new NetworkScanMock(SCAN_ID, SUB_ID));

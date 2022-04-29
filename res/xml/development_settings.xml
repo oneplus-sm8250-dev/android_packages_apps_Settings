@@ -263,10 +263,26 @@
         android:title="@string/debug_networking_category"
         android:order="400">
 
+        <com.android.settings.widget.AddPreference
+            android:key="prefer_5G_nr_mode"
+            android:title="@string/prefer_5G_nr_mode_title"
+            settings:controller="com.android.settings.development.Prefer5GNetworkSummaryController"/>
+
+        <com.android.settingslib.RestrictedPreference
+            android:fragment="com.android.settings.development.PreferVonrSettings"
+            android:key="prefer_vonr_mode"
+            android:title="@string/prefer_vonr_mode_title"
+            android:summary="@string/prefer_vonr_mode_summary"/>
+
         <SwitchPreference
             android:key="wifi_display_certification"
             android:title="@string/wifi_display_certification"
             android:summary="@string/wifi_display_certification_summary" />
+
+        <SwitchPreference
+            android:key="wifi_coverage_extend"
+            android:title="@string/wifi_coverage_extend"
+            android:summary="@string/wifi_coverage_extend_summary" />
 
         <SwitchPreference
             android:key="wifi_verbose_logging"
@@ -287,6 +303,12 @@
             android:key="mobile_data_always_on"
             android:title="@string/mobile_data_always_on"
             android:summary="@string/mobile_data_always_on_summary" />
+
+        <SwitchPreference
+            android:key="smart_dds_switch"
+            android:title="@string/smart_dds_switch"
+            android:summary="@string/smart_dds_switch_summary"
+            android:enabled="false" />
 
         <SwitchPreference
             android:key="tethering_hardware_offload"

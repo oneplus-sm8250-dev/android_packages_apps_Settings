@@ -18,6 +18,7 @@ package com.android.settings.wifi.tether;
 
 import static android.net.TetheringManager.ACTION_TETHER_STATE_CHANGED;
 import static android.net.wifi.WifiManager.WIFI_AP_STATE_CHANGED_ACTION;
+import static com.android.settings.wifi.tether.WifiTetherApBandPreferenceController.BAND_BOTH_2G_5G;
 
 import android.app.settings.SettingsEnums;
 import android.content.BroadcastReceiver;
@@ -54,6 +55,9 @@ public class WifiTetherSettings extends RestrictedDashboardFragment
     private static final String TAG = "WifiTetherSettings";
     private static final IntentFilter TETHER_STATE_CHANGE_FILTER;
     private static final String KEY_WIFI_TETHER_SCREEN = "wifi_tether_settings_screen";
+    private static final int EXPANDED_CHILD_COUNT_WITH_SECURITY_NON = 3;
+    private static boolean mWasApBand6GHzSelected = false;
+    private static final int BAND_6GHZ = SoftApConfiguration.BAND_6GHZ | SoftApConfiguration.BAND_2GHZ;
 
     @VisibleForTesting
     static final String KEY_WIFI_TETHER_NETWORK_NAME = "wifi_tether_network_name";
@@ -62,18 +66,18 @@ public class WifiTetherSettings extends RestrictedDashboardFragment
     @VisibleForTesting
     static final String KEY_WIFI_TETHER_AUTO_OFF = "wifi_tether_auto_turn_off";
     @VisibleForTesting
-    static final String KEY_WIFI_TETHER_MAXIMIZE_COMPATIBILITY =
-            WifiTetherMaximizeCompatibilityPreferenceController.PREF_KEY;
+    static final String KEY_WIFI_TETHER_NETWORK_AP_BAND = "wifi_tether_network_ap_band";
 
     private WifiTetherSwitchBarController mSwitchBarController;
     private WifiTetherSSIDPreferenceController mSSIDPreferenceController;
     private WifiTetherPasswordPreferenceController mPasswordPreferenceController;
+    private WifiTetherApBandPreferenceController mApBandPreferenceController;
     private WifiTetherSecurityPreferenceController mSecurityPreferenceController;
-    private WifiTetherMaximizeCompatibilityPreferenceController mMaxCompatibilityPrefController;
 
     private WifiManager mWifiManager;
     private boolean mRestartWifiApAfterConfigChange;
     private boolean mUnavailable;
+    private boolean wasApBandPrefUpdated = false;
 
     @VisibleForTesting
     TetherChangeReceiver mTetherChangeReceiver;
@@ -115,8 +119,7 @@ public class WifiTetherSettings extends RestrictedDashboardFragment
         mSSIDPreferenceController = use(WifiTetherSSIDPreferenceController.class);
         mSecurityPreferenceController = use(WifiTetherSecurityPreferenceController.class);
         mPasswordPreferenceController = use(WifiTetherPasswordPreferenceController.class);
-        mMaxCompatibilityPrefController =
-                use(WifiTetherMaximizeCompatibilityPreferenceController.class);
+        mApBandPreferenceController = use(WifiTetherApBandPreferenceController.class);
     }
 
     @Override
@@ -180,15 +183,16 @@ public class WifiTetherSettings extends RestrictedDashboardFragment
         controllers.add(new WifiTetherSSIDPreferenceController(context, listener));
         controllers.add(new WifiTetherSecurityPreferenceController(context, listener));
         controllers.add(new WifiTetherPasswordPreferenceController(context, listener));
+        controllers.add(new WifiTetherApBandPreferenceController(context, listener));
         controllers.add(
                 new WifiTetherAutoOffPreferenceController(context, KEY_WIFI_TETHER_AUTO_OFF));
-        controllers.add(new WifiTetherMaximizeCompatibilityPreferenceController(context, listener));
+
         return controllers;
     }
 
     @Override
     public void onTetherConfigUpdated(AbstractPreferenceController context) {
-        final SoftApConfiguration config = buildNewConfig();
+        SoftApConfiguration config = buildNewConfig();
         mPasswordPreferenceController.setSecurityType(config.getSecurityType());
 
         /**
@@ -203,18 +207,59 @@ public class WifiTetherSettings extends RestrictedDashboardFragment
             mSwitchBarController.stopTether();
         }
         mWifiManager.setSoftApConfiguration(config);
+        use(WifiTetherAutoOffPreferenceController.class).updateDisplay();
+
+        if (mSecurityPreferenceController.isOweDualSapSupported()) {
+            if ((config.getSecurityType() == SoftApConfiguration.SECURITY_TYPE_OWE)
+                   && (mApBandPreferenceController.getBandIndex() == BAND_BOTH_2G_5G)) {
+                mApBandPreferenceController.updatePreferenceEntries();
+                mApBandPreferenceController.updateDisplay();
+                wasApBandPrefUpdated = true;
+            } else if (wasApBandPrefUpdated
+                   && config.getSecurityType() != SoftApConfiguration.SECURITY_TYPE_OWE) {
+                mApBandPreferenceController.updatePreferenceEntries();
+                mApBandPreferenceController.updateDisplay();
+                wasApBandPrefUpdated = false;
+            }
+        }
+
+        if (mApBandPreferenceController.getBandIndex() == BAND_6GHZ
+                && (mWasApBand6GHzSelected == false)) {
+            mSecurityPreferenceController.updateDisplay();
+            mWasApBand6GHzSelected = true;
+            config = buildNewConfig();
+            mWifiManager.setSoftApConfiguration(config);
+        } else if (mApBandPreferenceController.getBandIndex() != BAND_6GHZ
+                &&(mWasApBand6GHzSelected == true)) {
+            mSecurityPreferenceController.updateDisplay();
+            mWasApBand6GHzSelected = false;
+        }
     }
 
     private SoftApConfiguration buildNewConfig() {
         final SoftApConfiguration.Builder configBuilder = new SoftApConfiguration.Builder();
         final int securityType = mSecurityPreferenceController.getSecurityType();
         configBuilder.setSsid(mSSIDPreferenceController.getSSID());
-        if (securityType != SoftApConfiguration.SECURITY_TYPE_OPEN) {
+        if (securityType == SoftApConfiguration.SECURITY_TYPE_OPEN
+              || securityType == SoftApConfiguration.SECURITY_TYPE_OWE) {
+            configBuilder.setPassphrase(null, securityType);
+        } else {
             configBuilder.setPassphrase(
                     mPasswordPreferenceController.getPasswordValidated(securityType),
                     securityType);
         }
-        mMaxCompatibilityPrefController.setupMaximizeCompatibility(configBuilder);
+        if (mApBandPreferenceController.getBandIndex() == BAND_BOTH_2G_5G) {
+            // Fallback to 2G band if user selected OWE+Dual band
+            if (securityType == SoftApConfiguration.SECURITY_TYPE_OWE) {
+                configBuilder.setBand(SoftApConfiguration.BAND_2GHZ);
+            } else {
+                int[] dualBands = new int[] {
+                       SoftApConfiguration.BAND_2GHZ, SoftApConfiguration.BAND_5GHZ};
+                configBuilder.setBands(dualBands);
+            }
+        } else {
+            configBuilder.setBand(mApBandPreferenceController.getBandIndex());
+        }
         return configBuilder.build();
     }
 
@@ -224,10 +269,14 @@ public class WifiTetherSettings extends RestrictedDashboardFragment
     }
 
     private void updateDisplayWithNewConfig() {
-        use(WifiTetherSSIDPreferenceController.class).updateDisplay();
-        use(WifiTetherSecurityPreferenceController.class).updateDisplay();
-        use(WifiTetherPasswordPreferenceController.class).updateDisplay();
-        use(WifiTetherMaximizeCompatibilityPreferenceController.class).updateDisplay();
+        use(WifiTetherSSIDPreferenceController.class)
+                .updateDisplay();
+        use(WifiTetherSecurityPreferenceController.class)
+                .updateDisplay();
+        use(WifiTetherPasswordPreferenceController.class)
+                .updateDisplay();
+        use(WifiTetherApBandPreferenceController.class)
+                .updateDisplay();
     }
 
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
@@ -241,7 +290,7 @@ public class WifiTetherSettings extends RestrictedDashboardFragment
                         keys.add(KEY_WIFI_TETHER_NETWORK_NAME);
                         keys.add(KEY_WIFI_TETHER_NETWORK_PASSWORD);
                         keys.add(KEY_WIFI_TETHER_AUTO_OFF);
-                        keys.add(KEY_WIFI_TETHER_MAXIMIZE_COMPATIBILITY);
+                        keys.add(KEY_WIFI_TETHER_NETWORK_AP_BAND);
                     }
 
                     // Remove duplicate

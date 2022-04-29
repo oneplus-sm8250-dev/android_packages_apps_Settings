@@ -3913,6 +3913,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"ምንም ድምጽ ወይም ንዝረት የለም"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"ምንም ድምጽ ወይም ንዝረት የለም እና በውይይት ክፍል ላይ አይታይም"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"በእርስዎ የስልክ ቅንብሮች የሚወሰን ሆኖ ሊደውል ወይም ሊነዝር ይችላል"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"ከዚህ በታች ቅድሚያ የሚሰጣቸው ማሳወቂያዎችን ያሳያል። ሁልጊዜ ጸጥ ያለ።"</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"ከዚህ በታች ቅድሚያ የሚሰጣቸው ማሳወቂያዎችን ያሳያል። ሁልጊዜ ጸጥ ያለ።"</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"ከዚህ በታች ቅድሚያ የሚሰጣቸው ማሳወቂያዎችን ያሳያል። ሁልጊዜ ጸጥ ያለ።"</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"መሣሪያ ሲከፈት፣ ማሳወቂያዎችን እንደ ሰንደቅ በማያ ገጹ አናት ላይ እንዳለ አሳይ"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"ሁሉም «<xliff:g id="APP_NAME">%1$s</xliff:g>» ማሳወቂያዎች"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"ሁሉም የ<xliff:g id="APP_NAME">%1$s</xliff:g> ማሳወቂያዎች"</string>

@@ -3914,6 +3914,9 @@
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"శబ్దం లేదా వైబ్రేషన్ లేదు, సంభాషణ విభాగం దిగువన కనిపిస్తుంది"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"ఫోన్ సెట్టింగ్‌ల ఆధారంగా రింగ్ లేదా వైబ్రేట్ కావచ్చు"</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"పరికరాన్ని అన్‌లాక్ చేసినప్పుడు స్క్రీన్ పైభాగంలో ఒక‌ బ్యానర్‌గా నోటిఫికేషన్‌లను చూపించు"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"తక్కువ ప్రాధాన్యత గల నోటిఫికేషన్‌లను ప్రదర్శిస్తుంది. ఎల్లప్పుడూ నిశ్శబ్దంగా ఉంచుతుంది."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"తక్కువ ప్రాధాన్యత గల నోటిఫికేషన్‌లను ప్రదర్శిస్తుంది. ఎల్లప్పుడూ నిశ్శబ్దంగా ఉంచుతుంది."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"తక్కువ ప్రాధాన్యత గల నోటిఫికేషన్‌లను ప్రదర్శిస్తుంది. ఎల్లప్పుడూ నిశ్శబ్దంగా ఉంచుతుంది."</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"\"<xliff:g id="APP_NAME">%1$s</xliff:g>\" నోటిఫికేషన్‌లన్నీ"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"అన్ని <xliff:g id="APP_NAME">%1$s</xliff:g> నోటిఫికేషన్‌లు"</string>
     <string name="default_notification_assistant" msgid="243718059890346442">"అనుకూల నోటిఫికేషన్‌లు"</string>

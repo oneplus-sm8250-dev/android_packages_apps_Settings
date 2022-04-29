@@ -3914,6 +3914,9 @@
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Үнү чыкпайт же дирилдебейт жана сүйлөшүүлөр тизмесинин ылдый жагында көрүнөт"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Телефондун жөндөөлөрүнө жараша шыңгырап же дирилдеши мүмкүн"</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Телефон кулпуланып турганда, билдирмелер экрандын жогору жагында баннер түрүндө көрүнөт"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Маанилүү билдирмелердин ылдый жагында чагылдырылат. Ар дайым үнсүз."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Маанилүү билдирмелердин ылдый жагында чагылдырылат. Ар дайым үнсүз."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Маанилүү билдирмелердин ылдый жагында чагылдырылат. Ар дайым үнсүз."</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"\"<xliff:g id="APP_NAME">%1$s</xliff:g>\" колдонмосундагы бардык билдирмелер"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосунун бардык билдирмелери"</string>
     <string name="default_notification_assistant" msgid="243718059890346442">"Ыңгайлаштырылуучу билдирмелер"</string>
