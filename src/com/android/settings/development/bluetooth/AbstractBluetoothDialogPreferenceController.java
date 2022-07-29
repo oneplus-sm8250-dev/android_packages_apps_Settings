@@ -38,7 +38,9 @@ public abstract class AbstractBluetoothDialogPreferenceController extends
 
     private static final String TAG = "AbstractBtDlgCtr";
 
-    protected static final int[] CODEC_TYPES = {BluetoothCodecConfig.SOURCE_CODEC_TYPE_LDAC,
+    protected static final int[] CODEC_TYPES = {BluetoothCodecConfig.SOURCE_CODEC_TYPE_APTX_TWSP,
+            BluetoothCodecConfig.SOURCE_CODEC_TYPE_LDAC,
+            BluetoothCodecConfig.SOURCE_CODEC_TYPE_APTX_ADAPTIVE,
             BluetoothCodecConfig.SOURCE_CODEC_TYPE_APTX_HD,
             BluetoothCodecConfig.SOURCE_CODEC_TYPE_APTX,
             BluetoothCodecConfig.SOURCE_CODEC_TYPE_AAC,
@@ -162,6 +164,11 @@ public abstract class AbstractBluetoothDialogPreferenceController extends
             Log.d(TAG, "Unable to get current codec config. Codec status is null");
             return null;
         }
+        if (codecStatus.getCodecConfig().getCodecType() >=
+            BluetoothCodecConfig.SOURCE_QVA_CODEC_TYPE_MAX) {
+            Log.d(TAG,"Invalid codec type");
+            return null;
+        }
         return codecStatus.getCodecConfig();
     }
 
@@ -219,10 +226,17 @@ public abstract class AbstractBluetoothDialogPreferenceController extends
      */
     public void onHDAudioEnabled(boolean enabled) {}
 
-    static int getHighestCodec(BluetoothCodecConfig[] configs) {
+    static int getHighestCodec(BluetoothA2dp bluetoothA2dp, BluetoothDevice activeDevice,
+            BluetoothCodecConfig[] configs) {
         if (configs == null) {
             Log.d(TAG, "Unable to get highest codec. Configs are empty");
             return BluetoothCodecConfig.SOURCE_CODEC_TYPE_INVALID;
+        }
+        Log.d(TAG, "CODEC_TYPES len: " + CODEC_TYPES.length + " codec_config len: " + configs.length);
+        // If HD audio is not enabled, SBC is the only one available codec.
+        if (bluetoothA2dp.isOptionalCodecsEnabled(activeDevice)
+                != BluetoothA2dp.OPTIONAL_CODECS_PREF_ENABLED) {
+            return BluetoothCodecConfig.SOURCE_CODEC_TYPE_SBC;
         }
         for (int i = 0; i < CODEC_TYPES.length; i++) {
             for (int j = 0; j < configs.length; j++) {

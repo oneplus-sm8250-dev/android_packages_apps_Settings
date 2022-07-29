@@ -3916,6 +3916,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Geen klank of vibrasie nie"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Geen klank of vibrasie nie en verskyn laer in gespreksafdeling"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Kan lui of vibreer op grond van fooninstellings"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Wys prioriteitkennisgewings hieronder. Altyd stil."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Wys prioriteitkennisgewings hieronder. Altyd stil."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Wys prioriteitkennisgewings hieronder. Altyd stil."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Wys kennisgewings as \'n banier boaan die skerm wanneer die toestel ontsluit is"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"Alle \"<xliff:g id="APP_NAME">%1$s</xliff:g>\"-kennisgewings"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Alle <xliff:g id="APP_NAME">%1$s</xliff:g>-kennisgewings"</string>

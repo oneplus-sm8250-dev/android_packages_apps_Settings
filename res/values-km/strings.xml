@@ -3919,6 +3919,9 @@
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"បង្ហាញការ​ជូនដំណឹងជា​ផ្ទាំងបដានៅផ្នែក​ខាងលើ​អេក្រង់ នៅពេល​ឧបករណ៍មិនជាប់សោ"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"ការជូនដំណឹង​ទាំងអស់ពី \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"ការជូនដំណឹង​ទាំងអស់ពី <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"បង្ហាញ​ខាងក្រោម​ការជូនដំណឹង​អាទិភាព។ បិទសំឡេង​ជានិច្ច។"</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"បង្ហាញ​ខាងក្រោម​ការជូនដំណឹង​អាទិភាព។ បិទសំឡេង​ជានិច្ច។"</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"បង្ហាញ​ខាងក្រោម​ការជូនដំណឹង​អាទិភាព។ បិទសំឡេង​ជានិច្ច។"</string>
     <string name="default_notification_assistant" msgid="243718059890346442">"ការជូនដំណឹង​ដែល​មានភាព​បត់បែន"</string>
     <plurals name="notifications_sent_daily" formatted="false" msgid="1479283620504341566">
       <item quantity="other">ការជូន​ដំណឹង ~<xliff:g id="NUMBER_1">%d</xliff:g> ក្នុងមួយថ្ងៃ</item>

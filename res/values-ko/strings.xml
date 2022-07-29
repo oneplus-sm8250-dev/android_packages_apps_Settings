@@ -3919,6 +3919,9 @@
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"소리나 진동이 울리지 않으며 대화 섹션 하단에 표시됨"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"휴대전화 설정에 따라 벨소리나 진동이 울릴 수 있음"</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"기기가 잠금 해제되어 있을 때 화면 상단에 알림 배너 표시"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"우선순위 알림 아래에 표시됩니다. 항상 음소거됩니다."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"우선순위 알림 아래에 표시됩니다. 항상 음소거됩니다."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"우선순위 알림 아래에 표시됩니다. 항상 음소거됩니다."</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"모든 ‘<xliff:g id="APP_NAME">%1$s</xliff:g>’ 알림"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"모든 <xliff:g id="APP_NAME">%1$s</xliff:g> 알림"</string>
     <string name="default_notification_assistant" msgid="243718059890346442">"적응형 알림"</string>

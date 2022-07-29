@@ -3918,6 +3918,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Без звук или вибриране"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Без звук или вибриране и се показва по-долу в секцията с разговори"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"Може да звъни или да вибрира въз основа на настройките за телефона"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Показва се под приоритетните известия. Винаги в тих режим."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Показва се под приоритетните известия. Винаги в тих режим."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Показва се под приоритетните известия. Винаги в тих режим."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Когато устройството е отключено, известията се показват като банер в горната част на екрана"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"Всички известия от: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Всички известия от: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -4817,6 +4820,8 @@
       <item quantity="other"><xliff:g id="NUMBER">%s</xliff:g> секунди</item>
       <item quantity="one">1 секунда</item>
     </plurals>
+    <string name="qtifeedback_settings_title"> Обратна връзка за хардуер</string>
+    <string name="qtifeedback_settings_subtitle">Qualcomm Technologies, Inc доклади</string>
     <string name="automatic_storage_manager_settings" msgid="519158151463974656">"Управление на хранилището"</string>
     <string name="automatic_storage_manager_text" msgid="6900593059927987273">"За да ви помогне да освободите място за съхранение, мениджърът на хранилището премахва от устройството ви резервните копия на снимки и видеоклипове."</string>
     <string name="automatic_storage_manager_days_title" msgid="5077286114860539367">"Премахване на снимките и видеоклиповете"</string>

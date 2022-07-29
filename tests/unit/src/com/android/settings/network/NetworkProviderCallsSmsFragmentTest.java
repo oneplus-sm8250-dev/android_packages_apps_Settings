@@ -22,12 +22,14 @@ import static org.mockito.Mockito.spy;
 
 import android.content.Context;
 import android.os.Looper;
+import android.util.FeatureFlagUtils;
 
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -51,6 +53,7 @@ public class NetworkProviderCallsSmsFragmentTest {
         }
     }
 
+    @Ignore
     @Test
     @UiThreadTest
     public void isPageSearchEnabled_shouldIncludeFragmentXml() {

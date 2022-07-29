@@ -215,6 +215,7 @@ public class ChooseLockGeneric extends SettingsActivity {
             mLockPatternUtils = new LockPatternUtils(activity);
             mIsSetNewPassword = ACTION_SET_NEW_PARENT_PROFILE_PASSWORD.equals(chooseLockAction)
                     || ACTION_SET_NEW_PASSWORD.equals(chooseLockAction);
+            mLockPatternUtils.sanitizePassword();
 
             // Defaults to needing to confirm credentials
             final boolean confirmCredentials = intent
@@ -901,6 +902,7 @@ public class ChooseLockGeneric extends SettingsActivity {
         @Override
         public void onDestroy() {
             super.onDestroy();
+            mLockPatternUtils.sanitizePassword();
             if (mUserPassword != null) {
                 mUserPassword.zeroize();
             }

@@ -3916,6 +3916,9 @@
     <string name="notification_channel_summary_low" msgid="5549662596677692000">"Nincs hang és rezgés"</string>
     <string name="notification_conversation_summary_low" msgid="6352818857388412326">"Nincs hang és rezgés, továbbá lejjebb jelenik meg a beszélgetések szakaszában"</string>
     <string name="notification_channel_summary_default" msgid="3674057458265438896">"A telefonbeállítások alapján csöröghet és rezeghet"</string>
+    <string name="notification_channel_summary_low_status" msgid="7866565328564018007">"Az elsőbbségi értesítések alatt jelenik meg. Mindig némítva van."</string>
+    <string name="notification_channel_summary_low_lock" msgid="4009247523075328235">"Az elsőbbségi értesítések alatt jelenik meg. Mindig némítva van."</string>
+    <string name="notification_channel_summary_low_status_lock" msgid="3668028634045057230">"Az elsőbbségi értesítések alatt jelenik meg. Mindig némítva van."</string>
     <string name="notification_channel_summary_high" msgid="3411637309360617621">"Feloldott állapotban az értesítések megjelenítése szalag formájában a képernyő felső részén"</string>
     <string name="notification_switch_label" msgid="8029371325967501557">"A(z) „<xliff:g id="APP_NAME">%1$s</xliff:g>” összes értesítése"</string>
     <string name="notification_app_switch_label" msgid="4422902423925084193">"Az összes <xliff:g id="APP_NAME">%1$s</xliff:g>-értesítés"</string>

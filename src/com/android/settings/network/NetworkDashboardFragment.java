@@ -20,6 +20,7 @@ import static com.android.settings.network.MobilePlanPreferenceController.MANAGE
 import android.app.Dialog;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchIndexableResource;
 import android.util.Log;
@@ -31,6 +32,7 @@ import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.network.MobilePlanPreferenceController.MobilePlanPreferenceHost;
+import com.android.settings.network.telephony.TelephonyUtils;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.wifi.WifiPrimarySwitchPreferenceController;
 import com.android.settingslib.core.AbstractPreferenceController;
@@ -72,6 +74,12 @@ public class NetworkDashboardFragment extends DashboardFragment implements
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        use(AirplaneModePreferenceController.class).onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
         use(AllInOneTetherPreferenceController.class).initEnabler(getSettingsLifecycle());
@@ -91,6 +99,8 @@ public class NetworkDashboardFragment extends DashboardFragment implements
     private static List<AbstractPreferenceController> buildPreferenceControllers(Context context,
             Lifecycle lifecycle, MetricsFeatureProvider metricsFeatureProvider, Fragment fragment,
             MobilePlanPreferenceHost mobilePlanHost) {
+        // Connect to ExtTelephonyService
+        TelephonyUtils.connectExtTelephonyService(context);
         final MobilePlanPreferenceController mobilePlanPreferenceController =
                 new MobilePlanPreferenceController(context, mobilePlanHost);
         final InternetPreferenceController internetPreferenceController =
